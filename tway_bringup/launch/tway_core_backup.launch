@@ -1,0 +1,19 @@
+<launch>
+  
+  <node pkg="tway" type="tway_core_main_run" name="tway_core_main_run" output="screen">
+  </node>
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find tway_description)/urdf/tway.urdf.xacro'" />  
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher">
+  <param name="use_gui" value="false"/>
+  <param name="rate" value="50"/>
+  </node>
+
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" > 
+  <param name="publish_frequency" value="50.0" />  
+  <param name="tf_prefix" type="string" value="" />
+  <param name="joint_states" value="/joint_states"/> 
+  <param name="ignore_timestamp" type='bool' value="false"/> 
+  </node>
+  <param name="imu_start" command="sudo chmod a+rw /dev/ttyACM0" />
+</launch>

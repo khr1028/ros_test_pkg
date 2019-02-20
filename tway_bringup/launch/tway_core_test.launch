@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="tway" type="tway_core_main_run" name="tway_core_main_run" output="screen">
+  </node>
+</launch>

@@ -1,0 +1,6 @@
+<launch>
+  <include file="$(find tway_description)/launch/tway_remote.launch">
+  </include>
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find tway_description)/rviz/tway_gazebo_model.rviz"/>
+</launch>

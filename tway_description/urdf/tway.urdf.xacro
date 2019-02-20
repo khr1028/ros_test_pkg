@@ -1,0 +1,388 @@
+<?xml version="1.0" ?>
+<robot name="tway" xmlns:xacro="http://ros.org/wiki/xacro">
+<!-- This included file for COLOR define-->
+  <xacro:include filename="$(find tway_description)/urdf/common_properties.xacro"/>
+<xacro:include filename="$(find tway_description)/urdf/tway.gazebo.xacro"/>
+
+<!-- ================================================================-->	
+
+<!--This is for: Constant declare -->
+  <xacro:property name="r200_cam_rgb_px" value="0.005"/>
+  <xacro:property name="r200_cam_rgb_py" value="0.018"/>
+  <xacro:property name="r200_cam_rgb_pz" value="0.013"/>
+  <xacro:property name="r200_cam_depth_offset" value="0.01"/>
+
+	<xacro:property name="length_wheel" value="0.05" />
+	<xacro:property name="radius_wheel" value="0.05" />
+	
+	<xacro:arg name="carter_ori" default="-0.158" />
+	<xacro:arg name="carter_radius" default="0.05" />
+	
+	<xacro:arg name="wheel_origin" default="-0.1" />
+	
+	
+	
+	
+	
+	<xacro:arg name="wheel_height" default="0" />
+	<xacro:arg name="wheel_height" default="0" />
+	
+	
+	
+	
+	<xacro:macro name="default_inertial" params="mass">       
+		<inertial>           
+			<mass value="${mass}" />          
+			<inertia ixx="1.0" ixy="0.0" ixz="0.0"          
+					 iyy="1.0" iyz="0.0"    
+					 izz="1.0" />
+		</inertial>
+	</xacro:macro>
+<!-- ================================================================-->	
+
+
+<!--First, we have to Describe Tway Base (body) and its foot print -->
+
+  <link name="base_footprint"/>
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link" />
+    <origin xyz="0 0 0.08" rpy="0 0 0"/>
+  </joint>
+
+<!-- ================================================================-->	
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="-0.52 0.82 -0.40" rpy="1.57 0 0"/>      <!-- body position only -->
+      <geometry>
+        <mesh filename="package://tway_description/meshes/bases/tway_base.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="grey"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>    <!-- no effect -->
+      <geometry>
+        <box size="0.8 1.0 0.38"/>
+      </geometry>
+    </collision>
+    
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="300e+00"/>
+      <inertia ixx="19.61" ixy="-4.7576583e-05" ixz="1.1160499e-04"
+               iyy="28.61" iyz="-3.5422299e-06"
+               izz="41" />
+    </inertial>
+  </link>
+<!-- ================================================================-->	
+
+
+<!-- //////////////////////Wheel part. Tway has 2 Wheels /////////////////////////-->
+<!--Second, We describe Left and Right Wheel  -->
+
+  <joint name="wheel_left_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_left_link"/>
+    <origin xyz="0.0 0.3315 $(arg wheel_origin)" rpy="-1.57 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="wheel_left_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <!--<mesh filename="package://tway_description/meshes/wheels/left_tire.stl" scale="0.001 0.001 0.001"/> -->
+        <cylinder length="0.08" radius="0.11"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0.0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.08" radius="0.11"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" />
+      <mass value="21" />
+      <inertia ixx="0.154" ixy="-4.2369783e-8" ixz="-5.9381719e-07"
+               iyy="0.056" iyz="-1.4400107e-8"
+               izz="0.132" />
+      </inertial>
+  </link>
+
+<!-- ================================================================-->	
+
+
+  <joint name="wheel_right_joint" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_right_link"/>
+    <origin xyz="0.0 -0.3315 $(arg wheel_origin)" rpy="-1.57 0 0"/>
+    <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="wheel_right_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <!--<mesh filename="package://tway_description/meshes/wheels/main_right_wheel.stl" scale="0.001 0.001 0.001"/>  -->
+        <cylinder length="0.08" radius="0.11"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0.0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.08" radius="0.11"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" />
+      <mass value="21" />
+      <inertia ixx="0.154" ixy="-4.2369783e-8" ixz="-5.9381719e-07"
+               iyy="0.056" iyz="-1.4400107e-8"
+               izz="0.132" />
+      </inertial>
+  </link>
+
+	
+<!-- //////////////////////CARTER part. Tway has 4 CARTERS /////////////////////////-->
+	
+<!-- ================================================================-->	
+
+	
+<joint name="caster_back_right_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster_back_right_link"/>
+    <origin xyz="0.35 -0.27 $(arg carter_ori)" rpy="1.57 0 0"/>
+	<axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="caster_back_right_link">
+	 <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="$(arg carter_radius)"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+	  	  
+    <collision>
+      <origin xyz="0 0.0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="$(arg carter_radius)"/>
+      </geometry>
+      <material name="red"/>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" />
+      <mass value="1" />
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0"
+               iyy="0.1" iyz="0.0"
+               izz="0.1" />
+    </inertial>
+  </link>
+	
+	
+<!-- ================================================================-->	
+
+		
+  <joint name="caster_back_left_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster_back_left_link"/>
+    <origin xyz="0.35 0.27 $(arg carter_ori) " rpy="1.57 0 0"/>
+	  <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="caster_back_left_link">
+	<visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="$(arg carter_radius)"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+	  
+    <collision>
+      <origin xyz="0 0.0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="$(arg carter_radius)"/>
+      </geometry>
+      <material name="blue"/>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" />
+      <mass value="1" />
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0"
+               iyy="0.1" iyz="0.0"
+               izz="0.1" />
+    </inertial>
+  </link>
+	
+	
+<!-- ================================================================-->	
+
+	
+	
+	<joint name="caster_front_right_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster_front_right_link"/>
+    <origin xyz="-0.35 -0.27 $(arg carter_ori)" rpy="1.57 0 0"/>
+		<axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="caster_front_right_link">
+	 <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="$(arg carter_radius)"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+	  
+    <collision>
+      <origin xyz="0 0.0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="$(arg carter_radius)"/>
+      </geometry>
+      <material name="red"/>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" />
+      <mass value="1" />
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0"
+               iyy="0.1" iyz="0.0"
+               izz="0.1" />
+    </inertial>
+  </link>
+
+	
+	
+<!-- ================================================================-->	
+	
+  <joint name="caster_front_left_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster_front_left_link"/>
+    <origin xyz="-0.35 0.27 $(arg carter_ori)" rpy="1.57 0 0"/>
+	  <axis xyz="0 0 1"/>
+  </joint>
+
+  <link name="caster_front_left_link">
+	  
+	<visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="$(arg carter_radius)"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+	  
+    <collision>
+      <origin xyz="0 0.0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="$(arg carter_radius)"/>
+      </geometry>
+      <material name="blue"/>
+    </collision>
+
+    <inertial>
+      <origin xyz="0 0 0" />
+      <mass value="1" />
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0"
+               iyy="0.1" iyz="0.0"
+               izz="0.1" />
+    </inertial>
+  </link>
+	
+<!-- ================================================================-->	
+	
+	
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="-0.032 0 0.068" rpy="0 0 0"/>
+  </joint>
+
+  <link name="imu_link"/>
+
+<!-- ================================================================-->	
+
+
+  <joint name="scan_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="laser"/>
+    <origin xyz="0.42 -0.035 0.1" rpy="0 0 0"/>
+  </joint>
+
+
+
+  <link name="laser">
+    <visual>
+      <origin xyz="0 0 0" rpy="-1.57 0 0"/>
+      <geometry>
+        <mesh filename="package://tway_description/meshes/sensors/sick551.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0315" radius="0.055"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.114" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+               iyy="0.001" iyz="0.0"
+               izz="0.001" />
+    </inertial>
+  </link>
+
+<!-- ================================================================-->	
+
+  <joint name="scan_joint_back" type="fixed">
+    <parent link="base_link"/>
+    <child link="base_scan_back"/>
+    <origin xyz="-0.42 0.035 0.15" rpy="0 0 3.1459"/>
+  </joint>
+
+  <link name="base_scan_back">
+    <visual>
+      <origin xyz="0 0.0 0.0" rpy="-1.57 0 3.14"/>
+      <geometry>
+        <mesh filename="package://tway_description/meshes/sensors/sick551.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.0315" radius="0.055"/>
+      </geometry>
+    </collision>
+
+    <inertial>
+      <mass value="0.114" />
+      <origin xyz="0 0 0" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0"
+               iyy="0.001" iyz="0.0"
+               izz="0.001" />
+    </inertial>
+  </link>
+<!-- ================================================================-->	
+
+
+</robot>

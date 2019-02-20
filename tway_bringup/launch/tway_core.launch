@@ -1,0 +1,8 @@
+<launch>
+  <arg name="multi_robot_name" default=""/>
+   <param name="imu_start" command="sudo chmod a+rw /dev/ttyS0" /> 
+  <node pkg="tway" type="tway_core_main_run" name="tway_core_main_run" output="screen">
+  </node>
+ 
+  
+</launch>

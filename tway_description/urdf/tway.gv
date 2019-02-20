@@ -1,0 +1,35 @@
+digraph G {
+node [shape=box];
+"base_footprint" [label="base_footprint"];
+"base_link" [label="base_link"];
+"caster_back_left_link" [label="caster_back_left_link"];
+"caster_back_right_link" [label="caster_back_right_link"];
+"caster_front_left_link" [label="caster_front_left_link"];
+"caster_front_right_link" [label="caster_front_right_link"];
+"imu_link" [label="imu_link"];
+"laser" [label="laser"];
+"base_scan_back" [label="base_scan_back"];
+"wheel_left_link" [label="wheel_left_link"];
+"wheel_right_link" [label="wheel_right_link"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"base_footprint" -> "base_joint" [label="xyz: 0 0 0 \nrpy: 0 -0 0.08"]
+"base_joint" -> "base_link"
+"base_link" -> "caster_back_left_joint" [label="xyz: 0.35 0.27 -0.158 \nrpy: 1.57 -0 0"]
+"caster_back_left_joint" -> "caster_back_left_link"
+"base_link" -> "caster_back_right_joint" [label="xyz: 0.35 -0.27 -0.158 \nrpy: 1.57 -0 0"]
+"caster_back_right_joint" -> "caster_back_right_link"
+"base_link" -> "caster_front_left_joint" [label="xyz: -0.35 0.27 -0.158 \nrpy: 1.57 -0 0"]
+"caster_front_left_joint" -> "caster_front_left_link"
+"base_link" -> "caster_front_right_joint" [label="xyz: -0.35 -0.27 -0.158 \nrpy: 1.57 -0 0"]
+"caster_front_right_joint" -> "caster_front_right_link"
+"base_link" -> "imu_joint" [label="xyz: 0 0 0.068 \nrpy: 0 -0 0"]
+"imu_joint" -> "imu_link"
+"base_link" -> "scan_joint" [label="xyz: 0.42 -0.035 0.1 \nrpy: 0 -0 0"]
+"scan_joint" -> "laser"
+"base_link" -> "scan_joint_back" [label="xyz: -0.42 0.035 0.15 \nrpy: 0 -0 -3.13729"]
+"scan_joint_back" -> "base_scan_back"
+"base_link" -> "wheel_left_joint" [label="xyz: 0 0.3315 -0.1 \nrpy: -1.57 0 0"]
+"wheel_left_joint" -> "wheel_left_link"
+"base_link" -> "wheel_right_joint" [label="xyz: 0 -0.3315 -0.1 \nrpy: -1.57 0 0"]
+"wheel_right_joint" -> "wheel_right_link"
+}
