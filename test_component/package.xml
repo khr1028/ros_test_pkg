@@ -1,0 +1,24 @@
+<package>
+  <name>test_component</name>
+  <version>1.0.0</version>
+  <description>This package contains the components of the test_component package</description>
+  <maintainer email="keivan@maintainer.com">Keivan</maintainer>
+
+  <license>MIT</license>
+
+  <url type="website"></url>
+  <!-- <url type="bugtracker"></url> -->
+
+  <author>Keivan</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rtt</build_depend>
+  <build_depend>orogen</build_depend>
+  <run_depend>rtt</run_depend>
+
+  <test_depend>gtest</test_depend>
+
+  <export>
+
+  </export>
+</package>
